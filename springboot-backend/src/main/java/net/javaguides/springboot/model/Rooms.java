@@ -1,5 +1,6 @@
 package net.javaguides.springboot.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
@@ -45,22 +46,27 @@ public class Rooms {
     @NonNull
     @ManyToOne
     @JoinColumn(name = "supervisor_id")
+    @JsonBackReference
     private Supervisors supervisors;
 
     @NonNull
     @ManyToOne
     @JoinColumn(name = "group_id")
+    @JsonBackReference
     private Groups groups;
 
     @NonNull
     @ManyToOne
     @JoinColumn(name = "location_id")
+    @JsonBackReference
     private Locations locations;
 
     @OneToMany(mappedBy = "rooms")
+    @JsonBackReference
     private List<Events> events;
 
     @OneToMany(mappedBy = "rooms")
+    @JsonBackReference
     private List<AssetsRoom> assetRooms;
 
     public Long getId() {

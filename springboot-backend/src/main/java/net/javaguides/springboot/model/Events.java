@@ -2,11 +2,13 @@ package net.javaguides.springboot.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.sql.Date;
 import java.sql.Time;
+import java.util.ArrayList;
 import java.util.List;
 
 @NoArgsConstructor
@@ -55,6 +57,7 @@ public class Events {
     private Rooms rooms;
 
     @OneToMany(mappedBy = "events")
+    @JsonIgnore
     private List<CourseEvent> courseEvent;
 
     public Long getId() {

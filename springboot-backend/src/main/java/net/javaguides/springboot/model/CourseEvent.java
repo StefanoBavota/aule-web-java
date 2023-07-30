@@ -1,5 +1,6 @@
 package net.javaguides.springboot.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -18,10 +19,24 @@ public class CourseEvent {
     @NonNull
     @ManyToOne
     @JoinColumn(name = "course_id")
+    @JsonBackReference
     private Courses courses;
 
     @NonNull
     @ManyToOne
     @JoinColumn(name = "event_id")
+    @JsonBackReference
     private Events events;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Courses getCourses() {
+        return courses;
+    }
 }

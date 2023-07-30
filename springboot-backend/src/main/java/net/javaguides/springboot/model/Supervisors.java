@@ -1,5 +1,6 @@
 package net.javaguides.springboot.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
@@ -27,9 +28,11 @@ public class Supervisors {
     private String email;
 
     @OneToMany(mappedBy = "supervisors")
+    @JsonBackReference
     private List<Rooms> rooms;
 
     @OneToMany(mappedBy = "supervisors")
+    @JsonBackReference
     private List<Events> events;
 
     public Long getId() {

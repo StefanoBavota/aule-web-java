@@ -1,5 +1,6 @@
 package net.javaguides.springboot.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
@@ -23,6 +24,7 @@ public class Typologies {
     private String name;
 
     @OneToMany(mappedBy = "typologies")
+    @JsonBackReference
     private List<Events> events;
 
     public Long getId() {

@@ -1,6 +1,7 @@
 package net.javaguides.springboot.controller;
 
 import net.javaguides.springboot.dto.response.EventsResponse;
+import net.javaguides.springboot.model.Courses;
 import net.javaguides.springboot.model.Events;
 import net.javaguides.springboot.service.EventsService;
 import org.springframework.beans.factory.annotation.Autowired;
