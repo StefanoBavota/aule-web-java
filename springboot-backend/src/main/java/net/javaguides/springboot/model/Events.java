@@ -3,6 +3,7 @@ package net.javaguides.springboot.model;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -42,20 +43,23 @@ public class Events {
     @NonNull
     @ManyToOne
     @JoinColumn(name = "typology_id")
+    @JsonIgnoreProperties("events")
     private Typologies typologies;
 
     @NonNull
     @ManyToOne
     @JoinColumn(name = "supervisor_id")
+    @JsonIgnoreProperties("events")
     private Supervisors supervisors;
 
     @NonNull
     @ManyToOne
     @JoinColumn(name = "room_id")
+    @JsonIgnoreProperties("events")
     private Rooms rooms;
 
     @OneToMany(mappedBy = "events")
-    @JsonIgnore
+    @JsonManagedReference
     private List<CourseEvent> courseEvent;
 
     public Long getId() {

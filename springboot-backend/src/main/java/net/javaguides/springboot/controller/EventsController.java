@@ -9,6 +9,7 @@ import net.javaguides.springboot.service.EventsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,7 +27,7 @@ public class EventsController {
     }
 
     @PostMapping
-    public ResponseEntity<Events> createEvent(EventsRequest eventsRequest) {
+    public ResponseEntity<Events> createEvent(@RequestBody EventsRequest eventsRequest) {
         Events createdEvent = eventsService.saveOrUpdate(eventsRequest);
         return ResponseEntity.ok(createdEvent);
     }
