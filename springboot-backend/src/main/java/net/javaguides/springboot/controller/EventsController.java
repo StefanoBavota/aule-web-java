@@ -8,6 +8,7 @@ import net.javaguides.springboot.model.Events;
 import net.javaguides.springboot.service.EventsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -26,7 +27,8 @@ public class EventsController {
         return ResponseEntity.ok(eventsService.getAllEvents());
     }
 
-    @PostMapping
+
+    @RequestMapping(consumes = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.POST)
     public ResponseEntity<Events> createEvent(@RequestBody EventsRequest eventsRequest) {
         Events createdEvent = eventsService.saveOrUpdate(eventsRequest);
         return ResponseEntity.ok(createdEvent);

@@ -30,13 +30,13 @@ public class EventsRequest {
     private String description;
 
     @JsonProperty
-    private Rooms room;
+    private Long room_id;
 
     @JsonProperty
-    private Supervisors supervisor;
+    private Long supervisor_id;
 
     @JsonProperty
-    private Typologies typology;
+    private Long typology_id;
 
     public String getDate() {
         return date;
@@ -78,41 +78,41 @@ public class EventsRequest {
         this.description = description;
     }
 
-    public Rooms getRoom() {
-        return room;
+    public Long getRoom_id() {
+        return room_id;
     }
 
-    public void setRoom(Rooms room) {
-        this.room = room;
+    public void setRoom_id(Long room_id) {
+        this.room_id = room_id;
     }
 
-    public Supervisors getSupervisor() {
-        return supervisor;
+    public Long getSupervisor_id() {
+        return supervisor_id;
     }
 
-    public void setSupervisor(Supervisors supervisors) {
-        this.supervisor = supervisors;
+    public void setSupervisor_id(Long supervisor_id) {
+        this.supervisor_id = supervisor_id;
     }
 
-    public Typologies getTypology() {
-        return typology;
+    public Long getTypology_id() {
+        return typology_id;
     }
 
-    public void setTypology(Typologies typology) {
-        this.typology = typology;
+    public void setTypology_id(Long typology_id) {
+        this.typology_id = typology_id;
     }
 
     public EventsRequest() {
     }
 
-    public EventsRequest(String date, String startTime, String endTime, String name, String description, Rooms room, Supervisors supervisor, Typologies typology) {
+    public EventsRequest(String date, String startTime, String endTime, String name, String description, Long room_id, Long supervisor_id, Long typology_id) {
         this.date = date;
         this.startTime = startTime;
         this.endTime = endTime;
         this.name = name;
         this.description = description;
-        this.room = room;
-        this.supervisor = supervisor;
-        this.typology = typology;
+        this.room_id = room_id;
+        this.supervisor_id = supervisor_id;
+        this.typology_id = typology_id;
     }
 }

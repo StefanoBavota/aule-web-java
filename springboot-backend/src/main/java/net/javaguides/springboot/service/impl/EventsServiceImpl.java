@@ -4,6 +4,7 @@ import java.sql.Date;
 import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import net.javaguides.springboot.dto.request.EventsRequest;
 import net.javaguides.springboot.dto.response.EventsResponse;
@@ -100,10 +101,14 @@ public class EventsServiceImpl implements EventsService {
 
     @Override
     public Events saveOrUpdate(EventsRequest eventsRequest) {
-        return eventsRepository.save(this.DTOUpdateEntity(eventsRequest));
+        Optional<Rooms> room = roomsRepository.findById(eventsRequest.getRoom_id());
+        Optional<Supervisors> supervisor = supervisorsRepository.findById(eventsRequest.getSupervisor_id());
+        Optional<Typologies> typology = typologiesRepository.findById(eventsRequest.getTypology_id());
+
+        return eventsRepository.save(this.DTOUpdateEntity(eventsRequest, room, supervisor, typology));
     }
 
-    private Events DTOUpdateEntity(EventsRequest eventsRequest) {
+    private Events DTOUpdateEntity(EventsRequest eventsRequest, Optional<Rooms> room, Optional<Supervisors> supervisor, Optional<Typologies> typology) {
         Events event = new Events();
 
         event.setDate(Date.valueOf(eventsRequest.getDate()));
@@ -111,9 +116,11 @@ public class EventsServiceImpl implements EventsService {
         event.setEndTime(Time.valueOf(eventsRequest.getEndTime()));
         event.setName(eventsRequest.getName());
         event.setDescription(eventsRequest.getDescription());
-        event.setRooms(eventsRequest.getRoom());
-        event.setSupervisors(eventsRequest.getSupervisor());
-        event.setTypologies(eventsRequest.getTypology());
+        System.out.println(room);
+
+        event.setRooms(room.orElse(null));
+        event.setSupervisors(supervisor.orElse(null));
+        event.setTypologies(typology.orElse(null));
 
         return event;
     }
