@@ -1,8 +1,11 @@
 package net.javaguides.springboot.service.impl;
 
+import java.sql.Date;
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.javaguides.springboot.dto.request.EventsRequest;
 import net.javaguides.springboot.dto.response.EventsResponse;
 import net.javaguides.springboot.model.*;
 import net.javaguides.springboot.repository.EventsRepository;
@@ -96,7 +99,22 @@ public class EventsServiceImpl implements EventsService {
     }
 
     @Override
-    public Events saveOrUpdate(Events event) {
-        return eventsRepository.save(event);
+    public Events saveOrUpdate(EventsRequest eventsRequest) {
+        return eventsRepository.save(this.DTOUpdateEntity(eventsRequest));
+    }
+
+    private Events DTOUpdateEntity(EventsRequest eventsRequest) {
+        Events event = new Events();
+
+        event.setDate(Date.valueOf(eventsRequest.getDate()));
+        event.setStartTime(Time.valueOf(eventsRequest.getStartTime()));
+        event.setEndTime(Time.valueOf(eventsRequest.getEndTime()));
+        event.setName(eventsRequest.getName());
+        event.setDescription(eventsRequest.getDescription());
+        event.setRooms(eventsRequest.getRoom());
+        event.setSupervisors(eventsRequest.getSupervisor());
+        event.setTypologies(eventsRequest.getTypology());
+
+        return event;
     }
 }

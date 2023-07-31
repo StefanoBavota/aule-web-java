@@ -11,8 +11,6 @@ import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 
-@NoArgsConstructor
-@AllArgsConstructor
 @Entity
 @Table(name = "events")
 public class Events {
@@ -137,6 +135,21 @@ public class Events {
     }
 
     public void setCourseEvent(List<CourseEvent> courseEvent) {
+        this.courseEvent = courseEvent;
+    }
+
+    public Events() {
+    }
+
+    public Events(Date date, Time startTime, Time endTime, String name, String description, Typologies typologies, Supervisors supervisors, Rooms rooms, List<CourseEvent> courseEvent) {
+        this.date = date;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.name = name;
+        this.description = description;
+        this.typologies = typologies;
+        this.supervisors = supervisors;
+        this.rooms = rooms;
         this.courseEvent = courseEvent;
     }
 }
