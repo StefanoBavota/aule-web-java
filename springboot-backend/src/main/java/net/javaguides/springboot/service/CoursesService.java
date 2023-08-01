@@ -1,6 +1,6 @@
 package net.javaguides.springboot.service;
 
-import net.javaguides.springboot.model.Rooms;
+import net.javaguides.springboot.model.Courses;
 import net.javaguides.springboot.model.Typologies;
 import org.springframework.stereotype.Service;
 
@@ -8,9 +8,9 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public interface TypologiesService {
+public interface CoursesService {
 
-    public List<Typologies> getAllTypologies();
+    public List<Courses> getAllCourses();
 
-    Optional<Typologies> getTypologyById(Long idTypology);
+    Optional<Courses> getCourseById(Long idCourse);
 }

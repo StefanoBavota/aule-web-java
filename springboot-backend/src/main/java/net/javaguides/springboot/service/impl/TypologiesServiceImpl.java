@@ -1,6 +1,7 @@
 package net.javaguides.springboot.service.impl;
 
 import jakarta.transaction.Transactional;
+import net.javaguides.springboot.model.Courses;
 import net.javaguides.springboot.model.Typologies;
 import net.javaguides.springboot.repository.RoomsRepository;
 import net.javaguides.springboot.repository.TypologiesRepository;
@@ -20,23 +21,11 @@ public class TypologiesServiceImpl implements TypologiesService {
 
     @Override
     public List<Typologies> getAllTypologies() {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public Typologies saveOrUpdate(Typologies typology) {
-        // TODO Auto-generated method stub
-        return null;
+        return (List<Typologies>) typologiesRepository.findAll();
     }
 
     @Override
     public Optional<Typologies> getTypologyById(Long id) {
         return typologiesRepository.findById(id);
-    }
-
-    @Override
-    public void deleteTypology(Long idTypology) {
-        // TODO Auto-generated method stub
     }
 }
