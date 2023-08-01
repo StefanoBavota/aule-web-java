@@ -116,12 +116,17 @@ public class EventsServiceImpl implements EventsService {
 
     //------------- POST AND PUT -------------
     @Override
-    public Events saveOrUpdate(EventsRequest eventsRequest) {
+    public Long saveOrUpdate(EventsRequest eventsRequest) {
         Optional<Rooms> room = roomsRepository.findById(eventsRequest.getRoom_id());
         Optional<Supervisors> supervisor = supervisorsRepository.findById(eventsRequest.getSupervisor_id());
         Optional<Typologies> typology = typologiesRepository.findById(eventsRequest.getTypology_id());
 
-        return eventsRepository.save(this.DTOUpdateEntity(eventsRequest, room, supervisor, typology));
+//        return eventsRepository.save(this.DTOUpdateEntity(eventsRequest, room, supervisor, typology));
+
+        Events event = DTOUpdateEntity(eventsRequest, room, supervisor, typology);
+        Events savedEvent = eventsRepository.save(event);
+
+        return savedEvent.getId();
     }
 
     private Events DTOUpdateEntity(EventsRequest eventsRequest, Optional<Rooms> room, Optional<Supervisors> supervisor, Optional<Typologies> typology) {

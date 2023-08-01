@@ -1,14 +1,9 @@
 package net.javaguides.springboot.controller;
 
 import net.javaguides.springboot.dto.request.EventsRequest;
-import net.javaguides.springboot.dto.request.GroupsRequest;
 import net.javaguides.springboot.dto.response.EventsResponse;
-import net.javaguides.springboot.dto.response.GroupsResponse;
-import net.javaguides.springboot.model.Events;
-import net.javaguides.springboot.model.Groups;
 import net.javaguides.springboot.service.EventsService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,15 +29,15 @@ public class EventsController {
 
 //    @RequestMapping(consumes = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.POST)
     @PostMapping
-    public ResponseEntity<Events> createEvent(@RequestBody EventsRequest eventsRequest) {
-        Events createdEvent = eventsService.saveOrUpdate(eventsRequest);
+    public ResponseEntity<Long> createEvent(@RequestBody EventsRequest eventsRequest) {
+        Long createdEvent = eventsService.saveOrUpdate(eventsRequest);
         return ResponseEntity.ok(createdEvent);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Events> updateEvent(@PathVariable Long id, @RequestBody EventsRequest eventsRequest) {
+    public ResponseEntity<Long> updateEvent(@PathVariable Long id, @RequestBody EventsRequest eventsRequest) {
         eventsRequest.setId(id);
-        Events updatedEvent = eventsService.saveOrUpdate(eventsRequest);
+        Long updatedEvent = eventsService.saveOrUpdate(eventsRequest);
         return ResponseEntity.ok(updatedEvent);
     }
 

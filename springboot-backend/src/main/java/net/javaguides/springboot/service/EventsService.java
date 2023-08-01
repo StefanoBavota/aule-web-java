@@ -16,7 +16,7 @@ public interface EventsService {
 
     Optional<EventsResponse> getEventById(Long idEvent);
 
-    Events saveOrUpdate(EventsRequest eventsRequest);
+    Long saveOrUpdate(EventsRequest eventsRequest);
 
     void deleteEvent(Long idEvent);
 }
