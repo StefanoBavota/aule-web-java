@@ -48,9 +48,7 @@ public class EventsServiceImpl implements EventsService {
             List<Courses> coursesForEvent = getCoursesForEvent(events);
             response.setCourse(coursesForEvent);
 
-            if (!coursesForEvent.isEmpty()) {
-                eventsResponseList.add(response);
-            }
+            eventsResponseList.add(response);
         }
         return eventsResponseList;
     }
@@ -84,6 +82,11 @@ public class EventsServiceImpl implements EventsService {
                 coursesForEvent.add(course);
             }
         }
+
+        if (coursesForEvent.isEmpty()) {
+            return new ArrayList<>();
+        }
+
         return coursesForEvent;
     }
 
