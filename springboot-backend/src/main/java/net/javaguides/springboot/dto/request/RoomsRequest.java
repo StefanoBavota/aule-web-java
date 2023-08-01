@@ -1,8 +1,12 @@
-package net.javaguides.springboot.dto.response;
+package net.javaguides.springboot.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Data;
+import lombok.ToString;
 
-public class RoomsResponse {
+@Data
+@ToString
+public class RoomsRequest {
 
     @JsonProperty
     private Long id;
@@ -25,14 +29,14 @@ public class RoomsResponse {
     @JsonProperty
     private String link;
 
-    @JsonProperty("location_id")
-    private Long locationId;
+    @JsonProperty
+    private Long location_id;
 
-    @JsonProperty("supervisor_id")
-    private Long supervisorId;
+    @JsonProperty
+    private Long supervisor_id;
 
-    @JsonProperty("group_id")
-    private Long groupId;
+    @JsonProperty
+    private Long group_id;
 
     public Long getId() {
         return id;
@@ -90,34 +94,34 @@ public class RoomsResponse {
         this.link = link;
     }
 
-    public Long getLocationId() {
-        return locationId;
+    public Long getLocation_id() {
+        return location_id;
     }
 
-    public void setLocationId(Long locationId) {
-        this.locationId = locationId;
+    public void setLocation_id(Long location_id) {
+        this.location_id = location_id;
     }
 
-    public Long getSupervisorId() {
-        return supervisorId;
+    public Long getSupervisor_id() {
+        return supervisor_id;
     }
 
-    public void setSupervisorId(Long supervisorId) {
-        this.supervisorId = supervisorId;
+    public void setSupervisor_id(Long supervisor_id) {
+        this.supervisor_id = supervisor_id;
     }
 
-    public Long getGroupId() {
-        return groupId;
+    public Long getGroup_id() {
+        return group_id;
     }
 
-    public void setGroupId(Long groupId) {
-        this.groupId = groupId;
+    public void setGroup_id(Long group_id) {
+        this.group_id = group_id;
     }
 
-    public RoomsResponse() {
+    public RoomsRequest() {
     }
 
-    public RoomsResponse(Long id, String name, int capacity, String description, int electricalOutlets, int ethernetPorts, String link, Long locationId, Long supervisorId, Long groupId) {
+    public RoomsRequest(Long id, String name, int capacity, String description, int electricalOutlets, int ethernetPorts, String link, Long location_id, Long supervisor_id, Long group_id) {
         this.id = id;
         this.name = name;
         this.capacity = capacity;
@@ -125,8 +129,8 @@ public class RoomsResponse {
         this.electricalOutlets = electricalOutlets;
         this.ethernetPorts = ethernetPorts;
         this.link = link;
-        this.locationId = locationId;
-        this.supervisorId = supervisorId;
-        this.groupId = groupId;
+        this.location_id = location_id;
+        this.supervisor_id = supervisor_id;
+        this.group_id = group_id;
     }
 }

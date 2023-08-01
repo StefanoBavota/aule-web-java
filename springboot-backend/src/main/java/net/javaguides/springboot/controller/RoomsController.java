@@ -1,5 +1,6 @@
 package net.javaguides.springboot.controller;
 
+import net.javaguides.springboot.dto.request.RoomsRequest;
 import net.javaguides.springboot.dto.response.RoomsResponse;
 import net.javaguides.springboot.model.Rooms;
 import net.javaguides.springboot.service.RoomsService;
@@ -28,15 +29,15 @@ public class RoomsController {
     }
 
     @PostMapping
-    public ResponseEntity<Rooms> createRoom(@RequestBody Rooms rooms) {
-        Rooms createdRoom = roomsService.saveOrUpdate(rooms);
+    public ResponseEntity<Long> createRoom(@RequestBody RoomsRequest roomsRequest) {
+        Long createdRoom = roomsService.saveOrUpdate(roomsRequest);
         return ResponseEntity.ok(createdRoom);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Rooms> updateRoom(@PathVariable Long id, @RequestBody Rooms rooms) {
-        rooms.setId(id);
-        Rooms updatedRoom = roomsService.saveOrUpdate(rooms);
+    public ResponseEntity<Long> updateRoom(@PathVariable Long id, @RequestBody RoomsRequest roomsRequest) {
+        roomsRequest.setId(id);
+        Long updatedRoom = roomsService.saveOrUpdate(roomsRequest);
         return ResponseEntity.ok(updatedRoom);
     }
 

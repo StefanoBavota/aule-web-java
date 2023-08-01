@@ -84,7 +84,7 @@ public class Rooms {
         this.name = name;
     }
 
-    public long getCapacity() {
+    public int getCapacity() {
         return capacity;
     }
 
@@ -100,7 +100,7 @@ public class Rooms {
         this.description = description;
     }
 
-    public long getElectrical_outlets() {
+    public int getElectrical_outlets() {
         return electrical_outlets;
     }
 
@@ -108,7 +108,7 @@ public class Rooms {
         this.electrical_outlets = electrical_outlets;
     }
 
-    public long getEthernet_ports() {
+    public int getEthernet_ports() {
         return ethernet_ports;
     }
 
