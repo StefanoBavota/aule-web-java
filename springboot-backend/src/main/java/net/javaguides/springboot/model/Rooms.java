@@ -1,7 +1,6 @@
 package net.javaguides.springboot.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -85,7 +84,7 @@ public class Rooms {
         this.name = name;
     }
 
-    public int getCapacity() {
+    public long getCapacity() {
         return capacity;
     }
 
@@ -101,7 +100,7 @@ public class Rooms {
         this.description = description;
     }
 
-    public int getElectrical_outlets() {
+    public long getElectrical_outlets() {
         return electrical_outlets;
     }
 
@@ -109,7 +108,7 @@ public class Rooms {
         this.electrical_outlets = electrical_outlets;
     }
 
-    public int getEthernet_ports() {
+    public long getEthernet_ports() {
         return ethernet_ports;
     }
 
