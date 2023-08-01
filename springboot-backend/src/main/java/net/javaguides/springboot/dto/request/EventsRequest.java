@@ -10,6 +10,8 @@ import net.javaguides.springboot.model.Rooms;
 import net.javaguides.springboot.model.Supervisors;
 import net.javaguides.springboot.model.Typologies;
 
+import java.util.List;
+
 @Data
 @ToString
 public class EventsRequest {
@@ -40,6 +42,9 @@ public class EventsRequest {
 
     @JsonProperty
     private Long typology_id;
+
+    @JsonProperty
+    private List<Long> course_id;
 
     public Long getId() {
         return id;
@@ -113,10 +118,18 @@ public class EventsRequest {
         this.typology_id = typology_id;
     }
 
+    public List<Long> getCourse_id() {
+        return course_id;
+    }
+
+    public void setCourse_id(List<Long> course_id) {
+        this.course_id = course_id;
+    }
+
     public EventsRequest() {
     }
 
-    public EventsRequest(Long id, String date, String startTime, String endTime, String name, String description, Long room_id, Long supervisor_id, Long typology_id) {
+    public EventsRequest(Long id, String date, String startTime, String endTime, String name, String description, Long room_id, Long supervisor_id, Long typology_id, List<Long> course_id) {
         this.id = id;
         this.date = date;
         this.startTime = startTime;
@@ -126,5 +139,6 @@ public class EventsRequest {
         this.room_id = room_id;
         this.supervisor_id = supervisor_id;
         this.typology_id = typology_id;
+        this.course_id = course_id;
     }
 }

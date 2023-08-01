@@ -6,10 +6,6 @@ import lombok.*;
 
 @Entity
 @Table(name = "course_event")
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
 public class CourseEvent {
 
     @Id
@@ -19,13 +15,11 @@ public class CourseEvent {
     @NonNull
     @ManyToOne
     @JoinColumn(name = "course_id")
-    @JsonBackReference
     private Courses courses;
 
     @NonNull
     @ManyToOne
     @JoinColumn(name = "event_id")
-    @JsonBackReference
     private Events events;
 
     public Long getId() {
@@ -38,5 +32,17 @@ public class CourseEvent {
 
     public Courses getCourses() {
         return courses;
+    }
+
+    public void setCourses(Courses courses) {
+        this.courses = courses;
+    }
+
+    public Events getEvents() {
+        return events;
+    }
+
+    public void setEvents(Events events) {
+        this.events = events;
     }
 }

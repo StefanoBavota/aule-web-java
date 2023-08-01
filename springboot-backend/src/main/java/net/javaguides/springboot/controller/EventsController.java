@@ -27,7 +27,6 @@ public class EventsController {
         return ResponseEntity.ok(eventsService.getEventById(id));
     }
 
-//    @RequestMapping(consumes = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.POST)
     @PostMapping
     public ResponseEntity<Long> createEvent(@RequestBody EventsRequest eventsRequest) {
         Long createdEvent = eventsService.saveOrUpdate(eventsRequest);

@@ -11,10 +11,7 @@ import net.javaguides.springboot.dto.request.EventsRequest;
 import net.javaguides.springboot.dto.response.EventsResponse;
 import net.javaguides.springboot.dto.response.GroupsResponse;
 import net.javaguides.springboot.model.*;
-import net.javaguides.springboot.repository.EventsRepository;
-import net.javaguides.springboot.repository.RoomsRepository;
-import net.javaguides.springboot.repository.SupervisorsRepository;
-import net.javaguides.springboot.repository.TypologiesRepository;
+import net.javaguides.springboot.repository.*;
 import net.javaguides.springboot.service.EventsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -36,6 +33,12 @@ public class EventsServiceImpl implements EventsService {
 
     @Autowired
     private RoomsRepository roomsRepository;
+
+    @Autowired
+    private CoursesRepository coursesRepository;
+
+    @Autowired
+    private CourseEventRepository courseEventRepository;
 
     //------------- GET ALL -------------
     @Override
@@ -121,12 +124,20 @@ public class EventsServiceImpl implements EventsService {
         Optional<Supervisors> supervisor = supervisorsRepository.findById(eventsRequest.getSupervisor_id());
         Optional<Typologies> typology = typologiesRepository.findById(eventsRequest.getTypology_id());
 
-//        return eventsRepository.save(this.DTOUpdateEntity(eventsRequest, room, supervisor, typology));
-
         Events event = DTOUpdateEntity(eventsRequest, room, supervisor, typology);
-        Events savedEvent = eventsRepository.save(event);
 
-        return savedEvent.getId();
+        List<Long> courseIds = eventsRequest.getCourse_id();
+        for (Long courseId : courseIds) {
+            Courses course = coursesRepository.findById(courseId).orElse(null);
+            if (course != null) {
+                CourseEvent courseEvent = new CourseEvent();
+                courseEvent.setCourses(course);
+                courseEvent.setEvents(event);
+                courseEventRepository.save(courseEvent);
+            }
+        }
+
+        return event.getId();
     }
 
     private Events DTOUpdateEntity(EventsRequest eventsRequest, Optional<Rooms> room, Optional<Supervisors> supervisor, Optional<Typologies> typology) {
