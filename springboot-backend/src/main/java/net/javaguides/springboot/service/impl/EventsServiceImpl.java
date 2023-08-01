@@ -8,6 +8,7 @@ import java.util.Optional;
 
 import net.javaguides.springboot.dto.request.EventsRequest;
 import net.javaguides.springboot.dto.response.EventsResponse;
+import net.javaguides.springboot.dto.response.GroupsResponse;
 import net.javaguides.springboot.model.*;
 import net.javaguides.springboot.repository.EventsRepository;
 import net.javaguides.springboot.repository.RoomsRepository;
@@ -35,10 +36,19 @@ public class EventsServiceImpl implements EventsService {
     @Autowired
     private RoomsRepository roomsRepository;
 
+    //------------- GET ALL -------------
     @Override
     public List<EventsResponse> getAllEvents() {
         Iterable<Events> eventsIterable = eventsRepository.findAll();
         return entitiesToDTO(eventsIterable);
+    }
+
+    //------------- GET BY ID -------------
+    @Override
+    public Optional<EventsResponse> getEventById(Long id) {
+        Optional<Events> event = eventsRepository.findById(id);
+
+        return event.map(this::mapEventToResponse);
     }
 
     private List<EventsResponse> entitiesToDTO(Iterable<Events> eventsIterable) {
@@ -70,6 +80,9 @@ public class EventsServiceImpl implements EventsService {
         response.setSupervisor(events.getSupervisors());
         response.setRoom(events.getRooms());
 
+        List<Courses> coursesForEvent = getCoursesForEvent(events);
+        response.setCourse(coursesForEvent);
+
         return response;
     }
 
@@ -81,10 +94,6 @@ public class EventsServiceImpl implements EventsService {
             if (course != null) {
                 coursesForEvent.add(course);
             }
-        }
-
-        if (coursesForEvent.isEmpty()) {
-            return new ArrayList<>();
         }
 
         return coursesForEvent;
@@ -102,6 +111,7 @@ public class EventsServiceImpl implements EventsService {
         return rooms != null ? rooms.getId() : null;
     }
 
+    //------------- POST AND PUT -------------
     @Override
     public Events saveOrUpdate(EventsRequest eventsRequest) {
         Optional<Rooms> room = roomsRepository.findById(eventsRequest.getRoom_id());
@@ -112,19 +122,30 @@ public class EventsServiceImpl implements EventsService {
     }
 
     private Events DTOUpdateEntity(EventsRequest eventsRequest, Optional<Rooms> room, Optional<Supervisors> supervisor, Optional<Typologies> typology) {
-        Events event = new Events();
+        Events event;
+        if (eventsRequest.getId() != null) {
+            Optional<Events> existingEvent = eventsRepository.findById(eventsRequest.getId());
+            event = existingEvent.orElse(new Events());
+        } else {
+            event = new Events();
+        }
 
         event.setDate(Date.valueOf(eventsRequest.getDate()));
         event.setStartTime(Time.valueOf(eventsRequest.getStartTime()));
         event.setEndTime(Time.valueOf(eventsRequest.getEndTime()));
         event.setName(eventsRequest.getName());
         event.setDescription(eventsRequest.getDescription());
-        System.out.println(room);
 
         event.setRooms(room.orElse(null));
         event.setSupervisors(supervisor.orElse(null));
         event.setTypologies(typology.orElse(null));
 
-        return event;
+        return eventsRepository.save(event);
+    }
+
+    //------------- DELETE -------------
+    @Override
+    public void deleteEvent(Long id) {
+        eventsRepository.deleteById(id);
     }
 }

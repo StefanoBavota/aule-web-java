@@ -15,6 +15,9 @@ import net.javaguides.springboot.model.Typologies;
 public class EventsRequest {
 
     @JsonProperty
+    private Long id;
+
+    @JsonProperty
     private String date;
 
     @JsonProperty
@@ -37,6 +40,14 @@ public class EventsRequest {
 
     @JsonProperty
     private Long typology_id;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getDate() {
         return date;
@@ -105,7 +116,8 @@ public class EventsRequest {
     public EventsRequest() {
     }
 
-    public EventsRequest(String date, String startTime, String endTime, String name, String description, Long room_id, Long supervisor_id, Long typology_id) {
+    public EventsRequest(Long id, String date, String startTime, String endTime, String name, String description, Long room_id, Long supervisor_id, Long typology_id) {
+        this.id = id;
         this.date = date;
         this.startTime = startTime;
         this.endTime = endTime;

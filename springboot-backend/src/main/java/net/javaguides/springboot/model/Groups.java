@@ -1,5 +1,6 @@
 package net.javaguides.springboot.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -7,10 +8,6 @@ import java.util.List;
 
 @Entity
 @Table(name = "my_groups")
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
 public class Groups {
 
     @Id
@@ -32,4 +29,55 @@ public class Groups {
 
     @OneToMany(mappedBy = "groups")
     private List<Rooms> rooms;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getLink() {
+        return link;
+    }
+
+    public void setLink(String link) {
+        this.link = link;
+    }
+
+    public List<Rooms> getRooms() {
+        return rooms;
+    }
+
+    public void setRooms(List<Rooms> rooms) {
+        this.rooms = rooms;
+    }
+
+    public Groups() {
+    }
+
+    public Groups(Long id, String name, String description, String link, List<Rooms> rooms) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.link = link;
+        this.rooms = rooms;
+    }
 }
