@@ -5,6 +5,7 @@ import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import net.javaguides.springboot.dto.request.EventsRequest;
 import net.javaguides.springboot.dto.response.EventsResponse;
@@ -82,6 +83,8 @@ public class EventsServiceImpl implements EventsService {
 
         List<Courses> coursesForEvent = getCoursesForEvent(events);
         response.setCourse(coursesForEvent);
+
+        response.setCourseId(coursesForEvent.stream().map(Courses::getId).collect(Collectors.toList()));
 
         return response;
     }

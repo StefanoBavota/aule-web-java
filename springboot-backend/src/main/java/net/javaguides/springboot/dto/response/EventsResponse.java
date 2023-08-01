@@ -53,6 +53,10 @@ public class EventsResponse {
     @JsonProperty("courses")
     @JsonManagedReference
     private List<Courses> course;
+
+    @JsonProperty("course_id")
+    private List<Long> courseId;
+
     public Long getId() {
         return id;
     }
@@ -157,10 +161,18 @@ public class EventsResponse {
         this.course = course;
     }
 
+    public List<Long> getCourseId() {
+        return courseId;
+    }
+
+    public void setCourseId(List<Long> courseId) {
+        this.courseId = courseId;
+    }
+
     public EventsResponse() {
     }
 
-    public EventsResponse(Long id, String date, String startTime, String endTime, String name, String description, Long typologyId, Long supervisorId, Long roomId, Rooms room, Supervisors supervisor, Typologies typology, List<Courses> course) {
+    public EventsResponse(Long id, String date, String startTime, String endTime, String name, String description, Long typologyId, Long supervisorId, Long roomId, Rooms room, Supervisors supervisor, Typologies typology, List<Courses> course, List<Long> courseId) {
         this.id = id;
         this.date = date;
         this.startTime = startTime;
@@ -174,5 +186,6 @@ public class EventsResponse {
         this.supervisor = supervisor;
         this.typology = typology;
         this.course = course;
+        this.courseId = courseId;
     }
 }
