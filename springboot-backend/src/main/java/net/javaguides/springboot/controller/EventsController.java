@@ -48,7 +48,17 @@ public class EventsController {
     }
 
     @GetMapping("/rooms-current")
-    public ResponseEntity<List<EventsResponse>> getAllEventsByCourseId(@RequestParam Long classId, String selectedDay){
-        return ResponseEntity.ok(eventsService.getAllEventsByCourseId(classId, selectedDay));
+    public ResponseEntity<List<EventsResponse>> getAllEventsByClassId(@RequestParam Long classId, String selectedDay){
+        return ResponseEntity.ok(eventsService.getAllEventsByClassId(classId, selectedDay));
     }
+
+    @GetMapping("/course-current")
+    public ResponseEntity<List<EventsResponse>> getAllEventsByCourseId(@RequestParam Long courseId, String selectedDay){
+        return ResponseEntity.ok(eventsService.getAllEventsByCourseId(courseId, selectedDay));
+    }
+
+//    @GetMapping("/next-events")
+//    public ResponseEntity<List<EventsResponse>> getAllEventsByCourseId(@RequestParam Long courseId, String selectedDay){
+//        return ResponseEntity.ok(eventsService.getAllEventsByCourseId(courseId, selectedDay));
+//    }
 }

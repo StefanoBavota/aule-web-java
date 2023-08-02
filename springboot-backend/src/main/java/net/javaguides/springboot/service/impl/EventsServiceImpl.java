@@ -61,7 +61,7 @@ public class EventsServiceImpl implements EventsService {
 
     //------------- WEEKLY EVENTS BY CLASS ID -------------
     @Override
-    public List<EventsResponse> getAllEventsByCourseId(Long classId, String selectedDay) {
+    public List<EventsResponse> getAllEventsByClassId(Long classId, String selectedDay) {
         try {
             LocalDate selectedDate = LocalDate.parse(selectedDay);
 
@@ -91,6 +91,43 @@ public class EventsServiceImpl implements EventsService {
         return !eventDate.isBefore(startOfWeek) && !eventDate.isAfter(endOfWeek);
     }
     //------------- END WEEKLY EVENTS BY CLASS ID -------------
+
+    //------------- WEEKLY EVENTS BY COURSE ID -------------
+    @Override
+    public List<EventsResponse> getAllEventsByCourseId(Long courseId, String selectedDay) {
+        try {
+            LocalDate selectedDate = LocalDate.parse(selectedDay);
+
+            LocalDate startOfWeek = selectedDate.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
+            LocalDate endOfWeek = startOfWeek.plusDays(6);
+
+            Iterable<Events> eventsIterable = eventsRepository.findAll();
+            return entitiesToDTOFilteredByCourseAndDate(eventsIterable, courseId, startOfWeek, endOfWeek);
+        } catch (DateTimeParseException e) {
+            return new ArrayList<>();
+        }
+    }
+
+    private List<EventsResponse> entitiesToDTOFilteredByCourseAndDate(Iterable<Events> eventsIterable, Long courseId, LocalDate startOfWeek, LocalDate endOfWeek) {
+        List<EventsResponse> eventsResponseList = new ArrayList<>();
+        for (Events events : eventsIterable) {
+            for (CourseEvent courseEvent : events.getCourseEvent()) {
+                Courses course = courseEvent.getCourses();
+                if (course != null && course.getId().equals(courseId) && isEventCourseWithinWeek(events.getDate(), startOfWeek, endOfWeek)) {
+                    EventsResponse response = mapEventToResponse(events);
+                    response.setCourse(getCoursesForEvent(events));
+                    eventsResponseList.add(response);
+                    break;
+                }
+            }
+        }
+        return eventsResponseList;
+    }
+
+    private boolean isEventCourseWithinWeek(LocalDate eventDate, LocalDate startOfWeek, LocalDate endOfWeek) {
+        return !eventDate.isBefore(startOfWeek) && !eventDate.isAfter(endOfWeek);
+    }
+    //------------- END WEEKLY EVENTS BY COURSE ID -------------
 
     private List<EventsResponse> entitiesToDTO(Iterable<Events> eventsIterable) {
         List<EventsResponse> eventsResponseList = new ArrayList<>();

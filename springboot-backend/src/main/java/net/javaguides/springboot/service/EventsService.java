@@ -21,5 +21,7 @@ public interface EventsService {
 
     void deleteEvent(Long idEvent);
 
-    public List<EventsResponse> getAllEventsByCourseId(Long classId, String selectedDay);
+    public List<EventsResponse> getAllEventsByClassId(Long classId, String selectedDay);
+
+    public List<EventsResponse> getAllEventsByCourseId(Long courseId, String selectedDay);
 }
