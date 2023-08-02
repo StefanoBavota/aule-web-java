@@ -13,6 +13,8 @@ public interface RoomsService {
 
     public List<RoomsResponse> getAllRooms();
 
+    List<RoomsResponse> getRoomsByGroupId(Long groupId);
+
     Long saveOrUpdate(RoomsRequest roomsRequest);
 
     Optional<RoomsResponse> getRoomById(Long idRoom);

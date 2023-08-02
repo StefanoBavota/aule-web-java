@@ -19,8 +19,16 @@ public class RoomsController {
     private RoomsService roomsService;
 
     @GetMapping
-    public ResponseEntity<List<RoomsResponse>> getAllRooms(){
-        return ResponseEntity.ok(roomsService.getAllRooms());
+    public ResponseEntity<List<RoomsResponse>> getAllRooms(@RequestParam(required = false) Long groupId) {
+        List<RoomsResponse> roomsResponseList;
+
+        if (groupId != null) {
+            roomsResponseList = roomsService.getRoomsByGroupId(groupId);
+        } else {
+            roomsResponseList = roomsService.getAllRooms();
+        }
+
+        return ResponseEntity.ok(roomsResponseList);
     }
 
     @GetMapping("/{id}")

@@ -46,6 +46,12 @@ public class RoomServiceImpl implements RoomsService {
         return entitiesToDTO(roomsIterable);
     }
 
+    @Override
+    public List<RoomsResponse> getRoomsByGroupId(Long groupId) {
+        Iterable<Rooms> roomsIterable = roomsRepository.findAllByGroupsId(groupId);
+        return entitiesToDTO(roomsIterable);
+    }
+
     //------------- GET BY ID -------------
     @Override
     public Optional<RoomsResponse> getRoomById(Long id) {
