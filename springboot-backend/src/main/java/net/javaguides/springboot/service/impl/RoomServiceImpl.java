@@ -12,6 +12,7 @@ import net.javaguides.springboot.dto.request.RoomsRequest;
 import net.javaguides.springboot.dto.response.EventsResponse;
 import net.javaguides.springboot.dto.response.RoomsResponse;
 import net.javaguides.springboot.mapper.EventsMapper;
+import net.javaguides.springboot.mapper.RoomsMapper;
 import net.javaguides.springboot.model.*;
 import net.javaguides.springboot.repository.*;
 import net.javaguides.springboot.service.EventsService;
@@ -39,22 +40,19 @@ public class RoomServiceImpl implements RoomsService {
     private GroupsRepository groupsRepository;
 
     @Autowired
-    private EventsRepository eventsRepository;
-
-    @Autowired
     private EventsService eventsService;
 
     //------------- GET ALL -------------
     @Override
     public List<RoomsResponse> getAllRooms() {
         Iterable<Rooms> roomsIterable = roomsRepository.findAll();
-        return entitiesToDTO(roomsIterable);
+        return RoomsMapper.entitiesToDTO(roomsIterable);
     }
 
     @Override
     public List<RoomsResponse> getRoomsByGroupId(Long groupId) {
         Iterable<Rooms> roomsIterable = roomsRepository.findAllByGroupsId(groupId);
-        return entitiesToDTO(roomsIterable);
+        return RoomsMapper.entitiesToDTO(roomsIterable);
     }
 
     //------------- GET BY ID -------------
@@ -62,48 +60,7 @@ public class RoomServiceImpl implements RoomsService {
     public Optional<RoomsResponse> getRoomById(Long id) {
         Optional<Rooms> room = roomsRepository.findById(id);
 
-        return room.map(this::mapRoomToResponse);
-    }
-
-    private List<RoomsResponse> entitiesToDTO(Iterable<Rooms> roomsIterable) {
-        List<RoomsResponse> roomsResponseList = new ArrayList<>();
-        for (Rooms rooms : roomsIterable) {
-            RoomsResponse response = mapRoomToResponse(rooms);
-
-            roomsResponseList.add(response);
-        }
-        return roomsResponseList;
-    }
-
-    private RoomsResponse mapRoomToResponse(Rooms rooms) {
-        RoomsResponse response = new RoomsResponse();
-        response.setId(rooms.getId());
-        response.setName(rooms.getName());
-        response.setCapacity(rooms.getCapacity());
-        response.setDescription(rooms.getDescription());
-        response.setElectricalOutlets(rooms.getElectrical_outlets());
-        response.setEthernetPorts(rooms.getEthernet_ports());
-        response.setLink(rooms.getLink());
-
-        response.setLocationId(getIdFromLocations(rooms.getLocations()));
-        response.setSupervisorId(getIdFromSupervisors(rooms.getSupervisors()));
-        response.setGroupId(getIdFromGroups(rooms.getGroups()));
-
-//        response.setEvents(rooms.getEvents());
-
-        return response;
-    }
-
-    private Long getIdFromLocations(Locations locations) {
-        return locations != null ? locations.getId() : null;
-    }
-
-    private Long getIdFromSupervisors(Supervisors supervisors) {
-        return supervisors != null ? supervisors.getId() : null;
-    }
-
-    private Long getIdFromGroups(Groups groups) {
-        return groups != null ? groups.getId() : null;
+        return room.map(RoomsMapper::mapRoomToResponse);
     }
 
     //------------- GET ROOMS WITH EVENTS OF DAY -------------
@@ -123,7 +80,7 @@ public class RoomServiceImpl implements RoomsService {
             if (!eventsOnSelectedDay.isEmpty()) {
                 List<EventsResponse> eventsResponseList = new ArrayList<>(eventsOnSelectedDay);
 
-                RoomsResponse roomResponse = mapRoomToResponse(room);
+                RoomsResponse roomResponse = RoomsMapper.mapRoomToResponse(room);
                 roomResponse.setEvents(eventsResponseList);
 
                 roomsWithEventsOnSelectedDay.add(roomResponse);

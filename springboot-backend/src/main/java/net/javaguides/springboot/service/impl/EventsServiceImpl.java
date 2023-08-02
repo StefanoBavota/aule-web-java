@@ -103,21 +103,7 @@ public class EventsServiceImpl implements EventsService {
 
         List<EventsResponse> allEvents = getAllEvents();
 
-        return filterEventsByDateBetween(allEvents, nowDateTime, threeHoursLaterDateTime);
-    }
-
-    private List<EventsResponse> filterEventsByDateBetween(List<EventsResponse> eventsList, LocalDateTime startTime, LocalDateTime endTime) {
-        List<EventsResponse> filteredEvents = new ArrayList<>();
-        for (EventsResponse event : eventsList) {
-            LocalDate eventDate = LocalDate.parse(event.getDate());
-            LocalTime eventStartTime = LocalTime.parse(event.getStartTime());
-            LocalDateTime eventStartDateTime = eventDate.atTime(eventStartTime);
-
-            if (eventStartDateTime.isAfter(startTime) && eventStartDateTime.isBefore(endTime)) {
-                filteredEvents.add(event);
-            }
-        }
-        return filteredEvents;
+        return EventsMapper.filterEventsByDateBetween(allEvents, nowDateTime, threeHoursLaterDateTime);
     }
 
     //------------- POST AND PUT -------------

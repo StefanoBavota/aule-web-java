@@ -3,6 +3,8 @@ package net.javaguides.springboot.mapper;
 import net.javaguides.springboot.dto.response.EventsResponse;
 import net.javaguides.springboot.model.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -47,7 +49,23 @@ public class EventsMapper {
     public static boolean isEventCourseWithinWeek(LocalDate eventDate, LocalDate startOfWeek, LocalDate endOfWeek) {
         return !eventDate.isBefore(startOfWeek) && !eventDate.isAfter(endOfWeek);
     }
-    //------------- WEEKLY EVENTS BY COURSE ID -------------
+    //------------- END WEEKLY EVENTS BY COURSE ID -------------
+
+    // ------------- EVENTS NEXT THREE HOURS  -------------
+    public static List<EventsResponse> filterEventsByDateBetween(List<EventsResponse> eventsList, LocalDateTime startTime, LocalDateTime endTime) {
+        List<EventsResponse> filteredEvents = new ArrayList<>();
+        for (EventsResponse event : eventsList) {
+            LocalDate eventDate = LocalDate.parse(event.getDate());
+            LocalTime eventStartTime = LocalTime.parse(event.getStartTime());
+            LocalDateTime eventStartDateTime = eventDate.atTime(eventStartTime);
+
+            if (eventStartDateTime.isAfter(startTime) && eventStartDateTime.isBefore(endTime)) {
+                filteredEvents.add(event);
+            }
+        }
+        return filteredEvents;
+    }
+    // ------------- END EVENTS NEXT THREE HOURS  -------------
 
     // ------------- TO DTO -------------
     public static List<EventsResponse> entitiesToDTO(Iterable<Events> eventsIterable) {
