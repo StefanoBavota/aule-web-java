@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -44,5 +45,10 @@ public class EventsController {
     public ResponseEntity<Void> deleteEventById(@PathVariable Long id) {
         eventsService.deleteEvent(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/rooms-current")
+    public ResponseEntity<List<EventsResponse>> getAllEventsByCourseId(@RequestParam Long classId, String selectedDay){
+        return ResponseEntity.ok(eventsService.getAllEventsByCourseId(classId, selectedDay));
     }
 }

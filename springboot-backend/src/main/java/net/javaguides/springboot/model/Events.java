@@ -9,6 +9,7 @@ import lombok.*;
 
 import java.sql.Date;
 import java.sql.Time;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,7 +24,7 @@ public class Events {
 
     @NonNull
     @Column(name = "date")
-    private Date date;
+    private LocalDate date;
 
     @NonNull
     @Column(name = "start_time")
@@ -70,11 +71,11 @@ public class Events {
         this.id = id;
     }
 
-    public Date getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 
@@ -145,7 +146,7 @@ public class Events {
     public Events() {
     }
 
-    public Events(Date date, Time startTime, Time endTime, String name, String description, Typologies typologies, Supervisors supervisors, Rooms rooms, List<CourseEvent> courseEvent) {
+    public Events(LocalDate date, Time startTime, Time endTime, String name, String description, Typologies typologies, Supervisors supervisors, Rooms rooms, List<CourseEvent> courseEvent) {
         this.date = date;
         this.startTime = startTime;
         this.endTime = endTime;

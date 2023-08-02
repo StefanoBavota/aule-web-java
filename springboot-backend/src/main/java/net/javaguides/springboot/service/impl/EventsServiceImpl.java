@@ -2,6 +2,11 @@ package net.javaguides.springboot.service.impl;
 
 import java.sql.Date;
 import java.sql.Time;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.format.DateTimeParseException;
+import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -9,7 +14,6 @@ import java.util.stream.Collectors;
 
 import net.javaguides.springboot.dto.request.EventsRequest;
 import net.javaguides.springboot.dto.response.EventsResponse;
-import net.javaguides.springboot.dto.response.GroupsResponse;
 import net.javaguides.springboot.model.*;
 import net.javaguides.springboot.repository.*;
 import net.javaguides.springboot.service.EventsService;
@@ -54,6 +58,39 @@ public class EventsServiceImpl implements EventsService {
 
         return event.map(this::mapEventToResponse);
     }
+
+    //------------- WEEKLY EVENTS BY CLASS ID -------------
+    @Override
+    public List<EventsResponse> getAllEventsByCourseId(Long classId, String selectedDay) {
+        try {
+            LocalDate selectedDate = LocalDate.parse(selectedDay);
+
+            LocalDate startOfWeek = selectedDate.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
+            LocalDate endOfWeek = startOfWeek.plusDays(6);
+
+            Iterable<Events> eventsIterable = eventsRepository.findAll();
+            return entitiesToDTOFilteredByRoomAndDate(eventsIterable, classId, startOfWeek, endOfWeek);
+        } catch (DateTimeParseException e) {
+            return new ArrayList<>();
+        }
+    }
+
+    private List<EventsResponse> entitiesToDTOFilteredByRoomAndDate(Iterable<Events> eventsIterable, Long classId, LocalDate startOfWeek, LocalDate endOfWeek) {
+        List<EventsResponse> eventsResponseList = new ArrayList<>();
+        for (Events events : eventsIterable) {
+            if (events.getRooms() != null && events.getRooms().getId() == classId && isEventWithinWeek(events.getDate(), startOfWeek, endOfWeek)) {
+                EventsResponse response = mapEventToResponse(events);
+                response.setCourse(getCoursesForEvent(events));
+                eventsResponseList.add(response);
+            }
+        }
+        return eventsResponseList;
+    }
+
+    private boolean isEventWithinWeek(LocalDate eventDate, LocalDate startOfWeek, LocalDate endOfWeek) {
+        return !eventDate.isBefore(startOfWeek) && !eventDate.isAfter(endOfWeek);
+    }
+    //------------- END WEEKLY EVENTS BY CLASS ID -------------
 
     private List<EventsResponse> entitiesToDTO(Iterable<Events> eventsIterable) {
         List<EventsResponse> eventsResponseList = new ArrayList<>();
@@ -149,7 +186,7 @@ public class EventsServiceImpl implements EventsService {
             event = new Events();
         }
 
-        event.setDate(Date.valueOf(eventsRequest.getDate()));
+        event.setDate(Date.valueOf(eventsRequest.getDate()).toLocalDate());
         event.setStartTime(Time.valueOf(eventsRequest.getStartTime()));
         event.setEndTime(Time.valueOf(eventsRequest.getEndTime()));
         event.setName(eventsRequest.getName());

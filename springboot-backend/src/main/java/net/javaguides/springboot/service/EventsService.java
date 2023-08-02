@@ -1,5 +1,6 @@
 package net.javaguides.springboot.service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,4 +20,6 @@ public interface EventsService {
     Long saveOrUpdate(EventsRequest eventsRequest);
 
     void deleteEvent(Long idEvent);
+
+    public List<EventsResponse> getAllEventsByCourseId(Long classId, String selectedDay);
 }
