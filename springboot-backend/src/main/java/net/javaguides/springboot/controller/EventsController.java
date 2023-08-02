@@ -2,6 +2,7 @@ package net.javaguides.springboot.controller;
 
 import net.javaguides.springboot.dto.request.EventsRequest;
 import net.javaguides.springboot.dto.response.EventsResponse;
+import net.javaguides.springboot.dto.response.RoomsResponse;
 import net.javaguides.springboot.service.EventsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -19,8 +20,16 @@ public class EventsController {
     private EventsService eventsService;
 
     @GetMapping
-    public ResponseEntity<List<EventsResponse>> getAllEvents(){
-        return ResponseEntity.ok(eventsService.getAllEvents());
+    public ResponseEntity<List<EventsResponse>> getAllEvents(@RequestParam(required = false) Long roomId){
+        List<EventsResponse> eventsResponseList;
+
+        if (roomId != null) {
+            eventsResponseList = eventsService.getEventsByroomId(roomId);
+        } else {
+            eventsResponseList = eventsService.getAllEvents();
+        }
+
+        return ResponseEntity.ok(eventsResponseList);
     }
 
     @GetMapping("/{id}")
@@ -58,7 +67,7 @@ public class EventsController {
     }
 
     @GetMapping("/next-events")
-    public ResponseEntity<List<EventsResponse>> getNextEventsByGroupId(){
-        return ResponseEntity.ok(eventsService.getNextEventsByGroupId());
+    public ResponseEntity<List<EventsResponse>> getNextEventsByGroupId(@RequestParam Long groupId){
+        return ResponseEntity.ok(eventsService.getNextEventsByGroupId(groupId));
     }
 }

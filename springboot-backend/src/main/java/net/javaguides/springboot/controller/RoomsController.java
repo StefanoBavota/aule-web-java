@@ -54,4 +54,9 @@ public class RoomsController {
         roomsService.deleteRoom(id);
         return ResponseEntity.noContent().build();
     }
+
+    @GetMapping("/get-room-events")
+    public ResponseEntity<List<RoomsResponse>> getRoomEventsByDateAndGroup(@RequestParam Long groupId, String selectedDay) {
+        return ResponseEntity.ok(roomsService.getRoomEventsByDateAndGroup(groupId, selectedDay));
+    }
 }

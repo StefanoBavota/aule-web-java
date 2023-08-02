@@ -20,4 +20,6 @@ public interface RoomsService {
     Optional<RoomsResponse> getRoomById(Long idRoom);
 
     void deleteRoom(Long idRoom);
+
+    List<RoomsResponse> getRoomEventsByDateAndGroup(Long groupId, String selectedDay);
 }

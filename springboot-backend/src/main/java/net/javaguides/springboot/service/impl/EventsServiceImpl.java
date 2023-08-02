@@ -1,17 +1,16 @@
 package net.javaguides.springboot.service.impl;
 
 import java.sql.Date;
-import java.sql.Time;
 import java.time.*;
 import java.time.format.DateTimeParseException;
 import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import net.javaguides.springboot.dto.request.EventsRequest;
 import net.javaguides.springboot.dto.response.EventsResponse;
+import net.javaguides.springboot.dto.response.RoomsResponse;
 import net.javaguides.springboot.mapper.EventsMapper;
 import net.javaguides.springboot.model.*;
 import net.javaguides.springboot.repository.*;
@@ -43,13 +42,16 @@ public class EventsServiceImpl implements EventsService {
     @Autowired
     private CourseEventRepository courseEventRepository;
 
-    @Autowired
-    private GroupsRepository groupsRepository;
-
     //------------- GET ALL -------------
     @Override
     public List<EventsResponse> getAllEvents() {
         Iterable<Events> eventsIterable = eventsRepository.findAll();
+        return EventsMapper.entitiesToDTO(eventsIterable);
+    }
+
+    @Override
+    public List<EventsResponse> getEventsByroomId(Long roomId) {
+        Iterable<Events> eventsIterable = eventsRepository.findAllByRoomsId(roomId);
         return EventsMapper.entitiesToDTO(eventsIterable);
     }
 
@@ -95,7 +97,7 @@ public class EventsServiceImpl implements EventsService {
 
     //------------- EVENTS NEXT THREE HOURS -------------
     @Override
-    public List<EventsResponse> getNextEventsByGroupId() {
+    public List<EventsResponse> getNextEventsByGroupId(Long groupId) {
         LocalDateTime nowDateTime = LocalDateTime.now();
         LocalDateTime threeHoursLaterDateTime = nowDateTime.plusHours(3);
 

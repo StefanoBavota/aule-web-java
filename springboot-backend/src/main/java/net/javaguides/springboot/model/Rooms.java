@@ -8,10 +8,6 @@ import java.util.List;
 
 @Entity
 @Table(name = "rooms")
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
 public class Rooms {
 
     @Id
@@ -146,5 +142,24 @@ public class Rooms {
 
     public void setLocations(Locations locations) {
         this.locations = locations;
+    }
+
+    public List<Events> getEvents() {
+        return events;
+    }
+
+    public void setEvents(List<Events> events) {
+        this.events = events;
+    }
+
+    public List<AssetsRoom> getAssetRooms() {
+        return assetRooms;
+    }
+
+    public void setAssetRooms(List<AssetsRoom> assetRooms) {
+        this.assetRooms = assetRooms;
+    }
+
+    public Rooms() {
     }
 }

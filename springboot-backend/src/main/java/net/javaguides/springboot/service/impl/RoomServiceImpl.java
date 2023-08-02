@@ -11,11 +11,10 @@ import net.javaguides.springboot.dto.request.EventsRequest;
 import net.javaguides.springboot.dto.request.RoomsRequest;
 import net.javaguides.springboot.dto.response.EventsResponse;
 import net.javaguides.springboot.dto.response.RoomsResponse;
+import net.javaguides.springboot.mapper.EventsMapper;
 import net.javaguides.springboot.model.*;
-import net.javaguides.springboot.repository.GroupsRepository;
-import net.javaguides.springboot.repository.LocationsRepository;
-import net.javaguides.springboot.repository.RoomsRepository;
-import net.javaguides.springboot.repository.SupervisorsRepository;
+import net.javaguides.springboot.repository.*;
+import net.javaguides.springboot.service.EventsService;
 import net.javaguides.springboot.service.RoomsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -38,6 +37,12 @@ public class RoomServiceImpl implements RoomsService {
 
     @Autowired
     private GroupsRepository groupsRepository;
+
+    @Autowired
+    private EventsRepository eventsRepository;
+
+    @Autowired
+    private EventsService eventsService;
 
     //------------- GET ALL -------------
     @Override
@@ -84,6 +89,8 @@ public class RoomServiceImpl implements RoomsService {
         response.setSupervisorId(getIdFromSupervisors(rooms.getSupervisors()));
         response.setGroupId(getIdFromGroups(rooms.getGroups()));
 
+//        response.setEvents(rooms.getEvents());
+
         return response;
     }
 
@@ -97,6 +104,33 @@ public class RoomServiceImpl implements RoomsService {
 
     private Long getIdFromGroups(Groups groups) {
         return groups != null ? groups.getId() : null;
+    }
+
+    //------------- GET ROOMS WITH EVENTS OF DAY -------------
+    @Override
+    public List<RoomsResponse> getRoomEventsByDateAndGroup(Long groupId, String selectedDay) {
+        Iterable<Rooms> roomsIterable = roomsRepository.findAllByGroupsId(groupId);
+
+        List<RoomsResponse> roomsWithEventsOnSelectedDay = new ArrayList<>();
+
+        for (Rooms room : roomsIterable) {
+            List<EventsResponse> allEventsForRoom = eventsService.getEventsByroomId(room.getId());
+
+            List<EventsResponse> eventsOnSelectedDay = allEventsForRoom.stream()
+                    .filter(event -> event.getDate().equals(selectedDay))
+                    .toList();
+
+            if (!eventsOnSelectedDay.isEmpty()) {
+                List<EventsResponse> eventsResponseList = new ArrayList<>(eventsOnSelectedDay);
+
+                RoomsResponse roomResponse = mapRoomToResponse(room);
+                roomResponse.setEvents(eventsResponseList);
+
+                roomsWithEventsOnSelectedDay.add(roomResponse);
+            }
+        }
+
+        return roomsWithEventsOnSelectedDay;
     }
 
     //------------- POST AND PUT -------------

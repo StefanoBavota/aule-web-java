@@ -1,6 +1,9 @@
 package net.javaguides.springboot.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import net.javaguides.springboot.model.Events;
+
+import java.util.List;
 
 public class RoomsResponse {
 
@@ -33,6 +36,9 @@ public class RoomsResponse {
 
     @JsonProperty("group_id")
     private Long groupId;
+
+    @JsonProperty
+    private List<EventsResponse> events;
 
     public Long getId() {
         return id;
@@ -114,10 +120,18 @@ public class RoomsResponse {
         this.groupId = groupId;
     }
 
+    public List<EventsResponse> getEvents() {
+        return events;
+    }
+
+    public void setEvents(List<EventsResponse> events) {
+        this.events = events;
+    }
+
     public RoomsResponse() {
     }
 
-    public RoomsResponse(Long id, String name, int capacity, String description, int electricalOutlets, int ethernetPorts, String link, Long locationId, Long supervisorId, Long groupId) {
+    public RoomsResponse(Long id, String name, int capacity, String description, int electricalOutlets, int ethernetPorts, String link, Long locationId, Long supervisorId, Long groupId, List<EventsResponse> events) {
         this.id = id;
         this.name = name;
         this.capacity = capacity;
@@ -128,5 +142,6 @@ public class RoomsResponse {
         this.locationId = locationId;
         this.supervisorId = supervisorId;
         this.groupId = groupId;
+        this.events = events;
     }
 }

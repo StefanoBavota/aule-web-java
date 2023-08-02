@@ -15,6 +15,8 @@ public interface EventsService {
 
     public List<EventsResponse> getAllEvents();
 
+    List<EventsResponse> getEventsByroomId (Long roomId);
+
     Optional<EventsResponse> getEventById(Long idEvent);
 
     Long saveOrUpdate(EventsRequest eventsRequest);
@@ -25,5 +27,5 @@ public interface EventsService {
 
     public List<EventsResponse> getAllEventsByCourseId(Long courseId, String selectedDay);
 
-    public List<EventsResponse> getNextEventsByGroupId();
+    public List<EventsResponse> getNextEventsByGroupId(Long groupId);
 }
