@@ -57,8 +57,8 @@ public class EventsController {
         return ResponseEntity.ok(eventsService.getAllEventsByCourseId(courseId, selectedDay));
     }
 
-//    @GetMapping("/next-events")
-//    public ResponseEntity<List<EventsResponse>> getAllEventsByCourseId(@RequestParam Long courseId, String selectedDay){
-//        return ResponseEntity.ok(eventsService.getAllEventsByCourseId(courseId, selectedDay));
-//    }
+    @GetMapping("/next-events")
+    public ResponseEntity<List<EventsResponse>> getNextEventsByGroupId(){
+        return ResponseEntity.ok(eventsService.getNextEventsByGroupId());
+    }
 }

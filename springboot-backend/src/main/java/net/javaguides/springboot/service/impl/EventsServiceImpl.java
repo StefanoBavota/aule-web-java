@@ -2,9 +2,7 @@ package net.javaguides.springboot.service.impl;
 
 import java.sql.Date;
 import java.sql.Time;
-import java.time.DayOfWeek;
-import java.time.LocalDate;
-import java.time.ZoneId;
+import java.time.*;
 import java.time.format.DateTimeParseException;
 import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
@@ -44,6 +42,9 @@ public class EventsServiceImpl implements EventsService {
 
     @Autowired
     private CourseEventRepository courseEventRepository;
+
+    @Autowired
+    private GroupsRepository groupsRepository;
 
     //------------- GET ALL -------------
     @Override
@@ -93,6 +94,29 @@ public class EventsServiceImpl implements EventsService {
     }
 
     //------------- EVENTS NEXT THREE HOURS -------------
+    @Override
+    public List<EventsResponse> getNextEventsByGroupId() {
+        LocalDateTime nowDateTime = LocalDateTime.now();
+        LocalDateTime threeHoursLaterDateTime = nowDateTime.plusHours(3);
+
+        List<EventsResponse> allEvents = getAllEvents();
+
+        return filterEventsByDateBetween(allEvents, nowDateTime, threeHoursLaterDateTime);
+    }
+
+    private List<EventsResponse> filterEventsByDateBetween(List<EventsResponse> eventsList, LocalDateTime startTime, LocalDateTime endTime) {
+        List<EventsResponse> filteredEvents = new ArrayList<>();
+        for (EventsResponse event : eventsList) {
+            LocalDate eventDate = LocalDate.parse(event.getDate());
+            LocalTime eventStartTime = LocalTime.parse(event.getStartTime());
+            LocalDateTime eventStartDateTime = eventDate.atTime(eventStartTime);
+
+            if (eventStartDateTime.isAfter(startTime) && eventStartDateTime.isBefore(endTime)) {
+                filteredEvents.add(event);
+            }
+        }
+        return filteredEvents;
+    }
 
     //------------- POST AND PUT -------------
     @Override
@@ -127,8 +151,8 @@ public class EventsServiceImpl implements EventsService {
         }
 
         event.setDate(Date.valueOf(eventsRequest.getDate()).toLocalDate());
-        event.setStartTime(Time.valueOf(eventsRequest.getStartTime()));
-        event.setEndTime(Time.valueOf(eventsRequest.getEndTime()));
+        event.setStartTime(LocalTime.parse(eventsRequest.getStartTime()));
+        event.setEndTime(LocalTime.parse(eventsRequest.getEndTime()));
         event.setName(eventsRequest.getName());
         event.setDescription(eventsRequest.getDescription());
 

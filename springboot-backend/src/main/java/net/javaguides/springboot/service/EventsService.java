@@ -24,4 +24,6 @@ public interface EventsService {
     public List<EventsResponse> getAllEventsByClassId(Long classId, String selectedDay);
 
     public List<EventsResponse> getAllEventsByCourseId(Long courseId, String selectedDay);
+
+    public List<EventsResponse> getNextEventsByGroupId();
 }
