@@ -14,6 +14,7 @@ import java.util.stream.Collectors;
 
 import net.javaguides.springboot.dto.request.EventsRequest;
 import net.javaguides.springboot.dto.response.EventsResponse;
+import net.javaguides.springboot.mapper.EventsMapper;
 import net.javaguides.springboot.model.*;
 import net.javaguides.springboot.repository.*;
 import net.javaguides.springboot.service.EventsService;
@@ -48,7 +49,7 @@ public class EventsServiceImpl implements EventsService {
     @Override
     public List<EventsResponse> getAllEvents() {
         Iterable<Events> eventsIterable = eventsRepository.findAll();
-        return entitiesToDTO(eventsIterable);
+        return EventsMapper.entitiesToDTO(eventsIterable);
     }
 
     //------------- GET BY ID -------------
@@ -56,7 +57,7 @@ public class EventsServiceImpl implements EventsService {
     public Optional<EventsResponse> getEventById(Long id) {
         Optional<Events> event = eventsRepository.findById(id);
 
-        return event.map(this::mapEventToResponse);
+        return event.map(EventsMapper::mapEventToResponse);
     }
 
     //------------- WEEKLY EVENTS BY CLASS ID -------------
@@ -69,28 +70,11 @@ public class EventsServiceImpl implements EventsService {
             LocalDate endOfWeek = startOfWeek.plusDays(6);
 
             Iterable<Events> eventsIterable = eventsRepository.findAll();
-            return entitiesToDTOFilteredByRoomAndDate(eventsIterable, classId, startOfWeek, endOfWeek);
+            return EventsMapper.entitiesToDTOFilteredByRoomAndDate(eventsIterable, classId, startOfWeek, endOfWeek);
         } catch (DateTimeParseException e) {
             return new ArrayList<>();
         }
     }
-
-    private List<EventsResponse> entitiesToDTOFilteredByRoomAndDate(Iterable<Events> eventsIterable, Long classId, LocalDate startOfWeek, LocalDate endOfWeek) {
-        List<EventsResponse> eventsResponseList = new ArrayList<>();
-        for (Events events : eventsIterable) {
-            if (events.getRooms() != null && events.getRooms().getId() == classId && isEventWithinWeek(events.getDate(), startOfWeek, endOfWeek)) {
-                EventsResponse response = mapEventToResponse(events);
-                response.setCourse(getCoursesForEvent(events));
-                eventsResponseList.add(response);
-            }
-        }
-        return eventsResponseList;
-    }
-
-    private boolean isEventWithinWeek(LocalDate eventDate, LocalDate startOfWeek, LocalDate endOfWeek) {
-        return !eventDate.isBefore(startOfWeek) && !eventDate.isAfter(endOfWeek);
-    }
-    //------------- END WEEKLY EVENTS BY CLASS ID -------------
 
     //------------- WEEKLY EVENTS BY COURSE ID -------------
     @Override
@@ -102,94 +86,13 @@ public class EventsServiceImpl implements EventsService {
             LocalDate endOfWeek = startOfWeek.plusDays(6);
 
             Iterable<Events> eventsIterable = eventsRepository.findAll();
-            return entitiesToDTOFilteredByCourseAndDate(eventsIterable, courseId, startOfWeek, endOfWeek);
+            return EventsMapper.entitiesToDTOFilteredByCourseAndDate(eventsIterable, courseId, startOfWeek, endOfWeek);
         } catch (DateTimeParseException e) {
             return new ArrayList<>();
         }
     }
 
-    private List<EventsResponse> entitiesToDTOFilteredByCourseAndDate(Iterable<Events> eventsIterable, Long courseId, LocalDate startOfWeek, LocalDate endOfWeek) {
-        List<EventsResponse> eventsResponseList = new ArrayList<>();
-        for (Events events : eventsIterable) {
-            for (CourseEvent courseEvent : events.getCourseEvent()) {
-                Courses course = courseEvent.getCourses();
-                if (course != null && course.getId().equals(courseId) && isEventCourseWithinWeek(events.getDate(), startOfWeek, endOfWeek)) {
-                    EventsResponse response = mapEventToResponse(events);
-                    response.setCourse(getCoursesForEvent(events));
-                    eventsResponseList.add(response);
-                    break;
-                }
-            }
-        }
-        return eventsResponseList;
-    }
-
-    private boolean isEventCourseWithinWeek(LocalDate eventDate, LocalDate startOfWeek, LocalDate endOfWeek) {
-        return !eventDate.isBefore(startOfWeek) && !eventDate.isAfter(endOfWeek);
-    }
-    //------------- END WEEKLY EVENTS BY COURSE ID -------------
-
-    private List<EventsResponse> entitiesToDTO(Iterable<Events> eventsIterable) {
-        List<EventsResponse> eventsResponseList = new ArrayList<>();
-        for (Events events : eventsIterable) {
-            EventsResponse response = mapEventToResponse(events);
-            List<Courses> coursesForEvent = getCoursesForEvent(events);
-            response.setCourse(coursesForEvent);
-
-            eventsResponseList.add(response);
-        }
-        return eventsResponseList;
-    }
-
-    private EventsResponse mapEventToResponse(Events events) {
-        EventsResponse response = new EventsResponse();
-        response.setId(events.getId());
-        response.setDate(events.getDate().toString());
-        response.setName(events.getName());
-        response.setDescription(events.getDescription());
-
-        response.setStartTime(events.getStartTime() != null ? events.getStartTime().toString() : null);
-        response.setEndTime(events.getEndTime() != null ? events.getEndTime().toString() : null);
-        response.setTypologyId(getIdFromTypologies(events.getTypologies()));
-        response.setSupervisorId(getIdFromSupervisors(events.getSupervisors()));
-        response.setRoomId(getIdFromRooms(events.getRooms()));
-
-        response.setTypology(events.getTypologies());
-        response.setSupervisor(events.getSupervisors());
-        response.setRoom(events.getRooms());
-
-        List<Courses> coursesForEvent = getCoursesForEvent(events);
-        response.setCourse(coursesForEvent);
-
-        response.setCourseId(coursesForEvent.stream().map(Courses::getId).collect(Collectors.toList()));
-
-        return response;
-    }
-
-    private List<Courses> getCoursesForEvent(Events events) {
-        List<Courses> coursesForEvent = new ArrayList<>();
-        List<CourseEvent> courseEvents = events.getCourseEvent();
-        for (CourseEvent courseEvent : courseEvents) {
-            Courses course = courseEvent.getCourses();
-            if (course != null) {
-                coursesForEvent.add(course);
-            }
-        }
-
-        return coursesForEvent;
-    }
-
-    private Long getIdFromTypologies(Typologies typologies) {
-        return typologies != null ? typologies.getId() : null;
-    }
-
-    private Long getIdFromSupervisors(Supervisors supervisors) {
-        return supervisors != null ? supervisors.getId() : null;
-    }
-
-    private Long getIdFromRooms(Rooms rooms) {
-        return rooms != null ? rooms.getId() : null;
-    }
+    //------------- EVENTS NEXT THREE HOURS -------------
 
     //------------- POST AND PUT -------------
     @Override
