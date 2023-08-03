@@ -12,10 +12,5 @@ public interface SupervisorsService {
 
     public List<Supervisors> getAllSupervisors();
 
-    Supervisors saveOrUpdate(Supervisors supervisor);
-
     Optional<Supervisors> getSupervisorById(Long idSupervisor);
-
-    void deleteSupervisor(Long idSupervisor);
-
 }

@@ -2,6 +2,7 @@ package net.javaguides.springboot.service.impl;
 
 import jakarta.transaction.Transactional;
 import net.javaguides.springboot.model.Supervisors;
+import net.javaguides.springboot.model.Typologies;
 import net.javaguides.springboot.repository.RoomsRepository;
 import net.javaguides.springboot.repository.SupervisorsRepository;
 import net.javaguides.springboot.service.SupervisorsService;
@@ -20,23 +21,12 @@ public class SupervisorsServiceImpl implements SupervisorsService {
 
     @Override
     public List<Supervisors> getAllSupervisors() {
-        // TODO Auto-generated method stub
-        return null;
+        return (List<Supervisors>) supervisorsRepository.findAll();
     }
 
-    @Override
-    public Supervisors saveOrUpdate(Supervisors supervisor) {
-        // TODO Auto-generated method stub
-        return null;
-    }
 
     @Override
     public Optional<Supervisors> getSupervisorById(Long id) {
         return supervisorsRepository.findById(id);
-    }
-
-    @Override
-    public void deleteSupervisor(Long idSupervisor) {
-        // TODO Auto-generated method stub
     }
 }

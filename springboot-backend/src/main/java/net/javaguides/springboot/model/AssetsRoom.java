@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
+import javax.validation.constraints.NotNull;
+
 @Entity
 @Table(name = "asset_room")
 @Getter
@@ -17,12 +19,12 @@ public class AssetsRoom {
     @Column(name = "id")
     private Long id;
 
-    @NonNull
+    @NotNull
     @ManyToOne
     @JoinColumn(name = "asset_id")
     private Assets assets;
 
-    @NonNull
+    @NotNull
     @ManyToOne
     @JoinColumn(name = "room_id")
     private Rooms rooms;

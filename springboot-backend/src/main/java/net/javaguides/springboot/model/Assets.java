@@ -3,6 +3,7 @@ package net.javaguides.springboot.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Entity
@@ -18,7 +19,7 @@ public class Assets {
     @Column(name = "id")
     private Long id;
 
-    @NonNull
+    @NotNull
     @Column(name = "name")
     private String name;
 

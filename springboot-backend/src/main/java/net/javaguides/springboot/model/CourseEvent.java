@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 
+import javax.validation.constraints.NotNull;
+
 @Entity
 @Table(name = "course_event")
 public class CourseEvent {
@@ -12,12 +14,12 @@ public class CourseEvent {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NonNull
+    @NotNull
     @ManyToOne
     @JoinColumn(name = "course_id")
     private Courses courses;
 
-    @NonNull
+    @NotNull
     @ManyToOne
     @JoinColumn(name = "event_id")
     private Events events;

@@ -3,6 +3,7 @@ package net.javaguides.springboot.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Entity
@@ -14,15 +15,15 @@ public class Locations {
     @Column(name = "id")
     private Long id;
 
-    @NonNull
+    @NotNull
     @Column(name = "place")
     private String place;
 
-    @NonNull
+    @NotNull
     @Column(name = "building")
     private String building;
 
-    @NonNull
+    @NotNull
     @Column(name = "floor")
     private String floor;
 

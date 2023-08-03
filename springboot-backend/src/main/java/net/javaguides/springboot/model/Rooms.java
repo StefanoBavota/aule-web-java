@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Entity
@@ -15,42 +16,42 @@ public class Rooms {
     @Column(name = "id")
     private Long id;
 
-    @NonNull
+    @NotNull
     @Column(name = "name")
     private String name;
 
-    @NonNull
+    @NotNull
     @Column(name = "capacity")
     private int capacity;
 
     @Column(name = "description")
     private String description;
 
-    @NonNull
+    @NotNull
     @Column(name = "electrical_outlets")
     private int electrical_outlets;
 
-    @NonNull
+    @NotNull
     @Column(name = "ethernet_ports")
     private int ethernet_ports;
 
-    @NonNull
+    @NotNull
     @Column(name = "link")
     private String link;
 
-    @NonNull
+    @NotNull
     @ManyToOne
     @JoinColumn(name = "supervisor_id")
     @JsonBackReference
     private Supervisors supervisors;
 
-    @NonNull
+    @NotNull
     @ManyToOne
     @JoinColumn(name = "group_id")
     @JsonBackReference
     private Groups groups;
 
-    @NonNull
+    @NotNull
     @ManyToOne
     @JoinColumn(name = "location_id")
     @JsonBackReference

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Entity
@@ -15,15 +16,15 @@ public class Groups {
     @Column(name = "id")
     private Long id;
 
-    @NonNull
+    @NotNull
     @Column(name = "name")
     private String name;
 
-    @NonNull
+    @NotNull
     @Column(name = "description")
     private String description;
 
-    @NonNull
+    @NotNull
     @Column(name = "link")
     private String link;
 

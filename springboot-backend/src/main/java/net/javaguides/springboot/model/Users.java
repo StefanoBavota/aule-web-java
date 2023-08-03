@@ -3,6 +3,7 @@ package net.javaguides.springboot.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -18,11 +19,11 @@ public class Users {
     @Column(name = "id")
     private Long id;
 
-    @NonNull
+    @NotNull
     @Column(name = "name")
     private String name;
 
-    @NonNull
+    @NotNull
     @Column(name = "email")
     private String email;
 
@@ -30,7 +31,7 @@ public class Users {
     @Column(name = "email_verified_at")
     private Timestamp emailVerifiedAt;
 
-    @NonNull
+    @NotNull
     @Column(name = "password", nullable = false)
     private String password;
 }

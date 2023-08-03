@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
+import javax.validation.constraints.NotNull;
 import java.sql.Date;
 import java.sql.Time;
 import java.time.LocalDate;
@@ -23,38 +24,38 @@ public class Events {
     @Column(name = "id")
     private Long id;
 
-    @NonNull
+    @NotNull
     @Column(name = "date")
     private LocalDate date;
 
-    @NonNull
+    @NotNull
     @Column(name = "start_time")
     private LocalTime startTime;
 
-    @NonNull
+    @NotNull
     @Column(name = "end_time")
     private LocalTime endTime;
 
-    @NonNull
+    @NotNull
     @Column(name = "name")
     private String name;
 
     @Column(name = "description")
     private String description;
 
-    @NonNull
+    @NotNull
     @ManyToOne
     @JoinColumn(name = "typology_id")
     @JsonIgnoreProperties("events")
     private Typologies typologies;
 
-    @NonNull
+    @NotNull
     @ManyToOne
     @JoinColumn(name = "supervisor_id")
     @JsonIgnoreProperties("events")
     private Supervisors supervisors;
 
-    @NonNull
+    @NotNull
     @ManyToOne
     @JoinColumn(name = "room_id")
     @JsonIgnoreProperties("events")
